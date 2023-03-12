@@ -34,7 +34,7 @@ pub enum StopSeq{
 /// ```
 ///
 #[derive(Serialize, Deserialize)]
-pub struct Request{
+pub struct ChatRequest {
     model:String,
     messages:Vec<Message>,
     temperature: Option<f64>,
@@ -88,7 +88,7 @@ pub struct Usage{
 /// ```
 ///
 #[derive(Serialize, Deserialize)]
-pub struct Response{
+pub struct ChatResponse {
     id: String,
     object: String,
     created: u64,
@@ -97,7 +97,7 @@ pub struct Response{
 }
 
 
-impl Request {
+impl ChatRequest {
 
     pub fn new(messages : Vec<Message>) -> Self {
         Self {
@@ -137,7 +137,7 @@ impl Request {
         self.messages.push(message);
         self
     }
-    
+
     pub fn model(mut self, model: String) -> Self {
         self.model = model;
         self

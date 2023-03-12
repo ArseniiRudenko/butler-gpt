@@ -1,7 +1,6 @@
-mod opeanai;
-mod deepl;
 mod google;
-mod client;
+mod deepl;
+mod opeanai;
 
 use std::fs::File;
 use std::io::BufWriter;
