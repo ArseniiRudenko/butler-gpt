@@ -7,9 +7,12 @@ pub struct ChatClient {
 }
 
 impl ChatClient {
+
+    const URL: &'static str = "https://api.openai.com/v1/chat/completions";
+
     pub fn new(key: &str)->Self{
         ChatClient {
-            url: "https://api.openai.com/v1/chat/completions".to_string(),
+            url: ChatClient::URL.to_string(),
             key: key.to_string(),
             client:reqwest::Client::new()
         }
@@ -19,7 +22,7 @@ impl ChatClient {
     /// so if you run access to multiple api-s, pass client into constructor
     pub fn with_client(key: &str, client: &reqwest::Client)->Self{
         ChatClient {
-            url: "https://api.openai.com/v1/chat/completions".to_string(),
+            url: ChatClient::URL.to_string(),
             key: key.to_string(),
             client: client.clone()
         }
@@ -34,7 +37,5 @@ impl ChatClient {
             .json::<Response>()
             .await;
     }
-
-
 
 }

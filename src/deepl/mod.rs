@@ -10,9 +10,12 @@ pub struct DeeplClient {
 }
 
 impl DeeplClient {
+
+    const URL: &'static str = "https://api-free.deepl.com/v2/translate";
+
     pub fn new(key: &str) -> Self {
         DeeplClient {
-            url: "https://api-free.deepl.com/v2/translate".to_string(),
+            url: DeeplClient::URL.to_string(),
             key: key.to_string(),
             client:reqwest::Client::new()
         }
@@ -20,7 +23,7 @@ impl DeeplClient {
 
     pub fn with_client(key: &str, client: &reqwest::Client) -> Self {
         DeeplClient {
-            url: "https://api-free.deepl.com/v2/translate".to_string(),
+            url: DeeplClient::URL.to_string(),
             key: key.to_string(),
             client:client.clone()
         }
