@@ -14,3 +14,4 @@ cpal = { version = "*" }
 hound = "3.5.0"
 druid = "0.8.3"
 strum = { version = "0.24", features = ["derive"] }
+chrono = "0.4.23"
