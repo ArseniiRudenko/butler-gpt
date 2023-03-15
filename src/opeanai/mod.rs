@@ -12,7 +12,7 @@ use crate::opeanai::structs::FilesResponse;
 pub struct OpenAiClient {
     url:String,
     key:String,
-    client:reqwest::Client
+    client:Client
 }
 
 impl OpenAiClient {
@@ -20,22 +20,31 @@ impl OpenAiClient {
     const URL: &'static str = "https://api.openai.com/v1";
 
     pub fn new(key: &str)->Self{
-        OpenAiClient {
-            url: OpenAiClient::URL.to_string(),
-            key: key.to_string(),
-            client:reqwest::Client::new()
-        }
+        let client = Client::new();
+        return OpenAiClient::with_client(key,&client);
+
     }
 
     /// reqwest library recommends reusing single client,
     /// so if you run access to multiple api-s, pass client into constructor
-    pub fn with_client(key: &str, client: &reqwest::Client)->Self{
+    pub fn with_client(key: &str, client: &Client)->Self{
+        return  OpenAiClient::with_url_and_client(key,OpenAiClient::URL,client);
+    }
+
+    pub fn with_url(key: &str, url: &str) -> Self {
+        let client = Client::new();
+        return  OpenAiClient::with_url_and_client(key,url,&client)
+    }
+
+
+    pub fn with_url_and_client(key: &str, url: &str, client: &Client)->Self{
         OpenAiClient {
-            url: OpenAiClient::URL.to_string(),
+            url: url.to_string(),
             key: key.to_string(),
             client: client.clone()
         }
     }
+
 
 }
 
@@ -44,7 +53,7 @@ trait PostClient<TReq: Serialize + Sized,TRes: DeserializeOwned>{
 
     const ENDPOINT: &'static str;
 
-    fn get_client(&self)->reqwest::Client;
+    fn get_client(&self)->Client;
     fn get_key(&self)->&str;
     fn get_url(&self)->&str;
 
@@ -59,7 +68,6 @@ trait PostClient<TReq: Serialize + Sized,TRes: DeserializeOwned>{
             .await;
     }
 }
-
 
 #[async_trait(?Send)]
 trait GetClient<TRes: DeserializeOwned>{
