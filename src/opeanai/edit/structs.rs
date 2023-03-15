@@ -14,8 +14,6 @@ pub struct EditRequest {
     top_p: Option<f32>,
 }
 
-
-
 #[derive(Serialize, Deserialize)]
 pub struct EditChoice {
     pub text: String,

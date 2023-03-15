@@ -4,8 +4,10 @@ mod edit;
 mod structs;
 
 use async_trait::async_trait;
+use reqwest::Client;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
+use crate::opeanai::structs::FilesResponse;
 
 pub struct OpenAiClient {
     url:String,
@@ -56,4 +58,43 @@ trait PostClient<TReq: Serialize + Sized,TRes: DeserializeOwned>{
             .json::<TRes>()
             .await;
     }
+}
+
+
+#[async_trait(?Send)]
+trait GetClient<TRes: DeserializeOwned>{
+
+    const ENDPOINT: &'static str;
+
+    fn get_client(&self)->reqwest::Client;
+    fn get_key(&self)->&str;
+    fn get_url(&self)->&str;
+
+    async fn get(&self)-> Result<TRes,reqwest::Error>{
+        let final_url = self.get_url().to_owned()+Self::ENDPOINT;
+        return self.get_client().get(final_url)
+            .bearer_auth(self.get_key())
+            .send()
+            .await?
+            .json::<TRes>()
+            .await;
+    }
+}
+
+#[async_trait(?Send)]
+impl GetClient<FilesResponse> for OpenAiClient {
+    const ENDPOINT: &'static str = "/files";
+
+    fn get_client(&self) -> Client {
+        return self.client.clone()
+    }
+
+    fn get_key(&self) -> &str {
+        return self.key.as_str()
+    }
+
+    fn get_url(&self) -> &str {
+        return self.url.as_str()
+    }
+
 }
