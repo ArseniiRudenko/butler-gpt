@@ -33,7 +33,16 @@ async fn main() -> hound::Result<()> {
 
     // Let recording go for roughly three seconds.
     std::thread::sleep(std::time::Duration::from_secs(3));
-    handle.lock().unwrap().finalize()
+    drop(stream);
+
+    handle.lock().as_deref_mut().map(
+        |wr| wr.flush()
+    ).expect("TODO: panic message")
+        .expect("TODO: panic message");
+
+    drop(handle); // Close the file
+
+    Ok(())
 
 
 }

@@ -6,7 +6,7 @@ use structs::{CompletionRequest, CompletionResponse};
 use async_trait::async_trait;
 
 #[async_trait(?Send)]
-impl PostClient<CompletionRequest, CompletionResponse> for OpenAiClient {
+impl<'a> PostClient<'a,CompletionRequest, CompletionResponse> for OpenAiClient {
 
     const ENDPOINT: &'static str = "/completions";
 

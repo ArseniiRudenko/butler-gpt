@@ -6,7 +6,7 @@ use crate::opeanai::{OpenAiClient, PostClient};
 use async_trait::async_trait;
 
 #[async_trait(?Send)]
-impl PostClient<ChatRequest, ChatResponse> for OpenAiClient {
+impl<'a> PostClient<'a,ChatRequest, ChatResponse> for OpenAiClient {
 
     const ENDPOINT: &'static str = "/chat/completions";
 

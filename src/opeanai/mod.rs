@@ -49,7 +49,7 @@ impl OpenAiClient {
 }
 
 #[async_trait(?Send)]
-trait PostClient<TReq: Serialize + Sized,TRes: DeserializeOwned>{
+trait PostClient<'a, TReq: Serialize + Sized +'a,TRes: DeserializeOwned>{
 
     const ENDPOINT: &'static str;
 
@@ -57,15 +57,16 @@ trait PostClient<TReq: Serialize + Sized,TRes: DeserializeOwned>{
     fn get_key(&self)->&str;
     fn get_url(&self)->&str;
 
-    async fn run(&self, req:TReq)-> Result<TRes,reqwest::Error>{
+    async fn run(&'a self, req:TReq)-> Result<TRes,reqwest::Error>{
         let final_url = self.get_url().to_owned()+Self::ENDPOINT;
-        return self.get_client().post(final_url)
+        let result= self.get_client().post(final_url)
             .bearer_auth(self.get_key())
             .json(&req)
             .send()
             .await?
             .json::<TRes>()
             .await;
+        return result;
     }
 }
 

@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use crate::opeanai::edit::structs::{EditRequest,EditResponse};
 
 #[async_trait(?Send)]
-impl PostClient<EditRequest, EditResponse> for OpenAiClient {
+impl<'a> PostClient<'a,EditRequest, EditResponse> for OpenAiClient {
 
     const ENDPOINT: &'static str = "/edits";
 
