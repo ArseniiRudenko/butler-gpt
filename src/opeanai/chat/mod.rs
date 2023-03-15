@@ -5,7 +5,6 @@ use structs::{ChatRequest, ChatResponse};
 use crate::opeanai::{OpenAiClient, PostClient};
 use async_trait::async_trait;
 
-
 #[async_trait(?Send)]
 impl PostClient<ChatRequest, ChatResponse> for OpenAiClient {
 

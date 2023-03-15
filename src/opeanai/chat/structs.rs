@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use strum::Display;
 use strum::EnumString;
 use serde::{Serialize,Deserialize};
+use crate::opeanai::structs::Usage;
 
 #[derive(Debug, Display, EnumString, Eq, PartialEq,Serialize,Deserialize)]
 #[strum(serialize_all = "lowercase")]
@@ -45,23 +46,18 @@ pub struct ChatRequest {
     max_tokens: Option<u64>,
     presence_penalty: Option<f64>,
     frequency_penalty:Option<f64>,
-    logit_bias: Option<HashMap<i32,i32>>,
+    logit_bias: Option<HashMap<String,f32>>,
     user: Option<String>
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Choice{
+pub struct ChatChoice {
     index: u16,
     message: Message,
     finish_reason: String
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Usage{
-    prompt_tokens: u64,
-    completion_tokens: u64,
-    total_tokens: u64
-}
+
 
 /// Chat endpoint response
 ///
@@ -92,7 +88,7 @@ pub struct ChatResponse {
     id: String,
     object: String,
     created: u64,
-    choices: Vec<Choice>,
+    choices: Vec<ChatChoice>,
     usage:Usage
 }
 
@@ -189,7 +185,7 @@ impl ChatRequest {
         self
     }
 
-    pub fn logit_bias(mut self, logit_bias: HashMap<i32, i32>) -> Self {
+    pub fn logit_bias(mut self, logit_bias: HashMap<String, f32>) -> Self {
         self.logit_bias = Some(logit_bias);
         self
     }
