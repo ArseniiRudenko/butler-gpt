@@ -9,7 +9,7 @@ Basic idea is as follows:
  flowchart
     A[Record sound] -->|Sound| B
     B[speech-to-text] -->|text| C{Transaltion enabled}
-    C -->|Yes| D[Translator API(DEEPL?)]
+    C -->|Yes| D[Translator API]
     C -->|No| E
     D -->|translated text|E
     E[ChatGPT]-->|python code|F
