@@ -8,8 +8,8 @@ Basic idea is as follows:
 ```mermaid
  flowchart
     A[Record sound] -->|Sound| B
-    B[Google speach-to-text] -->|text| C{Transaltion enabled}
-    C -->|Yes| D[Deepl API]
+    B[speech-to-text] -->|text| C{Transaltion enabled}
+    C -->|Yes| D[Translator API(DEEPL?)]
     C -->|No| E
     D -->|translated text|E
     E[ChatGPT]-->|python code|F
